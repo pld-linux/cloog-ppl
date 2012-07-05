@@ -1,13 +1,12 @@
 Summary:	The Chunky Loop Generator
 Summary(pl.UTF-8):	Chunky Loop Generator - generator pętli cząstkowych
 Name:		cloog-ppl
-Version:	0.15.11
+Version:	0.16.1
 Release:	1
-License:	GPL v2+
+License:	LGPL v2.1+
 Group:		Development/Tools
-Source0:	ftp://gcc.gnu.org/pub/gcc/infrastructure/%{name}-%{version}.tar.gz
-# Source0-md5:	060ae4df6fb8176e021b4d033a6c0b9e
-Patch0:		%{name}-info.patch
+Source0:	http://www.bastoul.net/cloog/pages/download/cloog-parma-%{version}.tar.gz
+# Source0-md5:	f483539b30a60a3478eea70c77b26bef
 URL:		http://www.cloog.org/
 BuildRequires:	autoconf >= 2.13
 BuildRequires:	automake
@@ -16,7 +15,9 @@ BuildRequires:	gmp-c++-devel >= 4.1.3
 BuildRequires:	libtool
 BuildRequires:	ppl-devel >= 0.10
 BuildRequires:	texinfo >= 4.12
-Requires(post):	/sbin/ldconfig
+Requires:	%{name}-libs = %{version}-%{release}
+Provides:	cloog = %{version}
+Obsoletes:	cloog
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -38,14 +39,27 @@ narzutowi na sterowaniu oraz generowaniu bardzo wydajnego kodu.
 
 Ta wersja jest oparta na bibliotece ppl (Parma Polyhedra Library).
 
+%package libs
+Summary:	Chunky Loop Generator shared library - ppl based version
+Summary(pl.UTF-8):	Biblioteka współdzielona Chunky Loop Generatora - wersja oparta na ppl
+Group:		Libraries
+
+%description libs
+Chunky Loop Generator shared library - ppl based version.
+
+%description libs -l pl.UTF-8
+Biblioteka współdzielona Chunky Loop Generatora - wersja oparta na
+ppl.
+
 %package devel
 Summary:	Header files for the ppl based version of Chunky Loop Generator
 Summary(pl.UTF-8):	Pliki nagłówkowe opartej na ppl wersji Chunky Loop Generatora
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	gmp-devel >= 4.1.3
 Requires:	gmp-c++-devel >= 4.1.3
 Requires:	ppl-devel >= 0.10
+Provides:	cloog-devel = %{version}
 
 %description devel
 The header files for Chunky Loop Generator library.
@@ -66,21 +80,10 @@ Static library of ppl based version of Chunky Loop Generator.
 Statyczna biblioteka opartej na ppl wersji Chunky Loop Generatora.
 
 %prep
-%setup -q
-%patch0 -p1
+%setup -q -n cloog-parma-%{version}
 
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--with-ppl
-
-# Remove the cloog.info in the tarball
-# to force the re-generation of a new one
-test -f doc/cloog.info && %{__rm} doc/cloog.info
+%configure
 
 %{__make}
 
@@ -91,33 +94,33 @@ rm -rf $RPM_BUILD_ROOT
 	INSTALL="%{__install} -p" \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/postshell
-/sbin/ldconfig
--/usr/sbin/fix-info-dir -c %{_infodir}
-
-%postun	-p /sbin/postshell
-/sbin/ldconfig
--/usr/sbin/fix-info-dir -c %{_infodir}
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE README
 %attr(755,root,root) %{_bindir}/cloog
-%attr(755,root,root) %{_libdir}/libcloog.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcloog.so.0
-%{_infodir}/cloog.info*
+
+%files libs
+%defattr(644,root,root,755)
+%doc cloog-core/README
+%attr(755,root,root) %{_libdir}/libcloog-ppl.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcloog-ppl.so.1
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libcloog.so
-%{_libdir}/libcloog.la
-%{_includedir}/cloog
+%doc cloog-core/doc/cloog.pdf
+%attr(755,root,root) %{_libdir}/libcloog-ppl.so
+%{_libdir}/libcloog-ppl.la
+%dir %{_includedir}/cloog
+%{_includedir}/cloog/*.h
+%{_includedir}/cloog/matrix
+%{_includedir}/cloog/ppl
+%{_pkgconfigdir}/cloog-ppl.pc
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libcloog.a
+%{_libdir}/libcloog-ppl.a

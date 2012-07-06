@@ -10,8 +10,8 @@ Source0:	http://www.bastoul.net/cloog/pages/download/cloog-parma-%{version}.tar.
 URL:		http://www.cloog.org/
 BuildRequires:	autoconf >= 2.13
 BuildRequires:	automake
-BuildRequires:	gmp-devel >= 4.1.3
 BuildRequires:	gmp-c++-devel >= 4.1.3
+BuildRequires:	gmp-devel >= 4.1.3
 BuildRequires:	libtool
 BuildRequires:	ppl-devel >= 0.10
 BuildRequires:	texinfo >= 4.12
@@ -43,6 +43,7 @@ Ta wersja jest oparta na bibliotece ppl (Parma Polyhedra Library).
 Summary:	Chunky Loop Generator shared library - ppl based version
 Summary(pl.UTF-8):	Biblioteka współdzielona Chunky Loop Generatora - wersja oparta na ppl
 Group:		Libraries
+Conflicts:	%{name} < 0.16.1-1
 
 %description libs
 Chunky Loop Generator shared library - ppl based version.
@@ -56,8 +57,8 @@ Summary:	Header files for the ppl based version of Chunky Loop Generator
 Summary(pl.UTF-8):	Pliki nagłówkowe opartej na ppl wersji Chunky Loop Generatora
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gmp-devel >= 4.1.3
 Requires:	gmp-c++-devel >= 4.1.3
+Requires:	gmp-devel >= 4.1.3
 Requires:	ppl-devel >= 0.10
 Provides:	cloog-devel = %{version}
 

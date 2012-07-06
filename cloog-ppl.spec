@@ -17,7 +17,7 @@ BuildRequires:	ppl-devel >= 0.10
 BuildRequires:	texinfo >= 4.12
 Requires:	%{name}-libs = %{version}-%{release}
 Provides:	cloog = %{version}
-Obsoletes:	cloog
+Obsoletes:	cloog < 0.16.1-1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

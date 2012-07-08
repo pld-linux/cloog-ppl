@@ -43,7 +43,6 @@ Ta wersja jest oparta na bibliotece ppl (Parma Polyhedra Library).
 Summary:	Chunky Loop Generator shared library - ppl based version
 Summary(pl.UTF-8):	Biblioteka współdzielona Chunky Loop Generatora - wersja oparta na ppl
 Group:		Libraries
-Conflicts:	%{name} < 0.16.1-1
 
 %description libs
 Chunky Loop Generator shared library - ppl based version.

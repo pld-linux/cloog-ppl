@@ -2,7 +2,7 @@ Summary:	The Chunky Loop Generator
 Summary(pl.UTF-8):	Chunky Loop Generator - generator pętli cząstkowych
 Name:		cloog-ppl
 Version:	0.16.1
-Release:	2
+Release:	3
 License:	LGPL v2.1+
 Group:		Development/Tools
 Source0:	http://www.bastoul.net/cloog/pages/download/cloog-parma-%{version}.tar.gz
@@ -60,6 +60,8 @@ Requires:	gmp-c++-devel >= 4.1.3
 Requires:	gmp-devel >= 4.1.3
 Requires:	ppl-devel >= 0.10
 Provides:	cloog-devel = %{version}
+Conflicts:	cloog-isl-devel
+Conflicts:	cloog-polylib-devel
 
 %description devel
 The header files for Chunky Loop Generator library.
